@@ -8,7 +8,7 @@ const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [totalData, setTotalData] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
-  const {loading, startLoading, stopLoading} = useLoading();
+  const {loading, startLoading, stopLoading} = useLoading();  // custom hooks
   const [searchQuery, setSearchQuery] = useState("");
 
   async function FetchRecipes(skipCount, query) {

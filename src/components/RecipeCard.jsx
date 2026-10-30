@@ -17,7 +17,6 @@ const RecipeCard = ({ recipe }) => {
   return (
     <Link
       to={`/recipe/${id}`}
-      href="#"
       className="bg-card border border-border rounded-md hover:border-accent overflow-hidden flex flex-col transition-all duration-400 hover:-translate-1.5 hover:scale-105"
     >
       <img src={image} alt={name} className="h-48 w-full object-cover" />

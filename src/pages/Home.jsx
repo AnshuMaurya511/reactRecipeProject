@@ -55,13 +55,13 @@ const Home = () => {
     );
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className="h-screen flex justify-center">
-  //       <div className="Pageloader max-w-6xl m-auto "></div>
-  //     </div>
-  //   );
-  // }
+  if (loading && recipes.length === 0) {
+    return (
+      <div className="h-screen flex justify-center">
+        <div className="Pageloader max-w-6xl m-auto "></div>
+      </div>
+    );
+  }
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
@@ -89,8 +89,9 @@ const Home = () => {
         dataLength={recipes.length}
         next={() => FetchRecipes(recipes.length, searchQuery)}
         hasMore={recipes.length < totalData}
-        loader={<Loader/>}
-        endMessage={"recepice done...."}
+        loader={<Loader />}
+        style={{ overflow: "visible" }}
+        // endMessage={"recepice done...."}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {recipes.map((recipe) => (

@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import RecipeCard from "../components/RecipeCard";
 import axios from "axios";
 import { Form } from "react-router";
+import useLoading from "../hooks/useLoading";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [totalData, setTotalData] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
-  const [isloading, setIsloading] = useState(true);
+  const {loading, startLoading, stopLoading} = useLoading();
   const [searchQuery, setSearchQuery] = useState("");
 
   async function FetchRecipes(skipCount, query) {
-    setIsloading(true);
+    startLoading();
 
     let url = `https://dummyjson.com/recipes?limit=6&skip=${skipCount}`;
     if (query) {
@@ -27,7 +28,7 @@ const Home = () => {
     } catch (error) {
       setErrorMsg("Not Found");
     }
-    setIsloading(false);
+    stopLoading();
   }
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Home = () => {
     );
   }
 
-  if (isloading) {
+  if (loading) {
     return (
       <div className="h-screen flex justify-center">
         <div className="loader max-w-6xl m-auto "></div>

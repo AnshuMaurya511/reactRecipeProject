@@ -3,12 +3,14 @@ import RecipeCard from "../components/RecipeCard";
 import axios from "axios";
 import { Form } from "react-router";
 import useLoading from "../hooks/useLoading";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Loader from "../components/Loader";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [totalData, setTotalData] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
-  const {loading, startLoading, stopLoading} = useLoading();  // custom hooks
+  const { loading, startLoading, stopLoading } = useLoading(); // custom hooks
   const [searchQuery, setSearchQuery] = useState("");
 
   async function FetchRecipes(skipCount, query) {
@@ -53,13 +55,13 @@ const Home = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="h-screen flex justify-center">
-        <div className="loader max-w-6xl m-auto "></div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="h-screen flex justify-center">
+  //       <div className="Pageloader max-w-6xl m-auto "></div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
@@ -83,13 +85,21 @@ const Home = () => {
 
       {recipes.length === 0 && <p>{`"${searchQuery}" product is not found`}</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
-      </div>
+      <InfiniteScroll
+        dataLength={recipes.length}
+        next={() => FetchRecipes(recipes.length, searchQuery)}
+        hasMore={recipes.length < totalData}
+        loader={<Loader/>}
+        endMessage={"recepice done...."}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recipes.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+        </div>
+      </InfiniteScroll>
 
-      {recipes.length < totalData && (
+      {/* {recipes.length < totalData && (
         <div className="text-center mt-8">
           <button
             type="button"
@@ -99,7 +109,7 @@ const Home = () => {
             Load More
           </button>
         </div>
-      )}
+      )} */}
     </main>
   );
 };
